@@ -1,0 +1,5 @@
+torch
+torchvision
+torchaudio
+whisper-timestamped
+runpod
