@@ -6,7 +6,7 @@ The pipeline is designed to be robust, with features like graceful termination (
 Before you begin, ensure the following are installed and configured on the server:
 - Python 3.8 or higher
 - pip (Python package installer)
-- - Git
+- Git
 - NVIDIA GPUs with the appropriate CUDA drivers installed. Both scripts are optimized for a multi-GPU environment.
 
 **Setup and Installation**
@@ -17,10 +17,10 @@ First, clone this repository to your local machine:
 
 2. Create a Virtual Environment (Recommended)
 It is highly recommended to create a virtual environment to manage the project's dependencies and avoid conflicts with other projects.
-**# Create the virtual environment
+**Create the virtual environment
 python3 -m venv venv**
 
-# Activate the virtual environment
+Activate the virtual environment
 **source venv/bin/activate**
 
 3. Install Required Libraries
