@@ -68,7 +68,7 @@ While most settings are within the Python scripts, the following are crucial for
 - Final Output: The vLLM script's final, analyzed output is output_vllm/final_llm_results_lasthour.json.
 
 **Troubleshooting**
-- If you encounter any issues, please check the following:
+If you encounter any issues, please check the following:
   a. Virtual Environment: Ensure you are inside the activated virtual environment (venv). The command prompt should be prefixed with (venv).
   b. Dependencies: Confirm that all libraries in requirements.txt were installed successfully without errors.
   c. Script Permissions: Make sure the run_pipeline.sh script has execute permissions (chmod +x run_pipeline.sh).
