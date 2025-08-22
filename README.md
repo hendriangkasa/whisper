@@ -55,7 +55,7 @@ Scripts Overview
   c. Processes each transcription with three different prompts (Summary, Q&A, Sentiment).
 - Output: Saves a detailed JSON file for each processed transcription in output_vllm/json_llm/ and a final combined results file at output_vllm/final_llm_results_lasthour.json.
 
-**Configuration**\n
+**Configuration**<br>
 While most settings are within the Python scripts, the following are crucial for deployment:
 - Audio Input Path (ref_x_max.py): The script expects audio files to be located in data/80audio/lasthour_transcribe file/. This path is hardcoded.
 - Question Files (ref_x_max.py & ref_x_vllm.py): The scripts read questions from question/questions_CRS.txt and question/questions_CRS_2.txt. These files must be present.
