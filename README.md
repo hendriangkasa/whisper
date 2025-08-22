@@ -1,15 +1,15 @@
-**Project Description**
+**Project Description**<br>
 This repository contains a two-stage pipeline for processing audio files. The first script (ref_x_max.py) transcribes audio files in parallel using multiple GPUs. The second script (ref_x_vllm.py) takes the generated transcriptions and performs advanced analysis using a large language model (LLM) with vLLM for high-throughput inference.
 The pipeline is designed to be robust, with features like graceful termination (Ctrl+C), detailed logging, and efficient resource management.
 
-**Prerequisites**
+**Prerequisites**<br>
 Before you begin, ensure the following are installed and configured on the server:
 - Python 3.8 or higher
 - pip (Python package installer)
 - Git
 - NVIDIA GPUs with the appropriate CUDA drivers installed. Both scripts are optimized for a multi-GPU environment.
 
-**Setup and Installation**
+**Setup and Installation**<br>
 Follow these steps to set up the project environment and install the necessary dependencies.
 1. Clone the Repository
 First, clone this repository to your local machine:
@@ -20,7 +20,7 @@ It is highly recommended to create a virtual environment to manage the project's
 **Create the virtual environment
 python3 -m venv venv**
 
-Activate the virtual environment
+Activate the virtual environment<br>
 **source venv/bin/activate**
 
 3. Install Required Libraries
@@ -28,14 +28,14 @@ Install all the necessary Python libraries using the requirements.txt file. This
 **pip install -r requirements.txt**
 
 
-**How to Run the Pipeline**
+**How to Run the Pipeline**<br>
 To execute the entire automated workflow, use the provided bash script **run_pipeline.sh**.
 **./run_pipeline.sh**
 
 The script will first run ref_x_max.py to perform audio transcription. Upon its successful completion, it will automatically start ref_x_vllm.py to process the transcriptions. You can monitor the progress in the console and in the logs/ directory.
 
 
-Scripts Overview
+Scripts Overview<br>
 **ref_x_max.py (Transcription Stage)**
 - Function: Transcribes stereo MP3 audio files into text.
 - Input: Reads .mp3 files from the hardcoded directory: data/80audio/lasthour_transcribe file/.
@@ -67,7 +67,7 @@ While most settings are within the Python scripts, the following are crucial for
 - Intermediate Output: The transcription script's primary output is output_multi8/final_results_lasthour.json.
 - Final Output: The vLLM script's final, analyzed output is output_vllm/final_llm_results_lasthour.json.
 
-**Troubleshooting**
+**Troubleshooting**<br>
 If you encounter any issues, please check the following:
 - Virtual Environment: Ensure you are inside the activated virtual environment (venv). The command prompt should be prefixed with (venv).
 - Dependencies: Confirm that all libraries in requirements.txt were installed successfully without errors.
