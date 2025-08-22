@@ -73,4 +73,4 @@ If you encounter any issues, please check the following:
 - Dependencies: Confirm that all libraries in requirements.txt were installed successfully without errors.
 - Script Permissions: Make sure the run_pipeline.sh script has execute permissions (chmod +x run_pipeline.sh).
 - File Paths: Double-check that the input/output directories and the model path in run_pipeline.sh are correct and accessible.
-  e. CUDA/GPU Issues: Errors like "CUDA out of memory" suggest that the models are too large for the available VRAM. You may need to adjust the gpu_memory_utilization parameter in ref_x_vllm.py or reduce the number of parallel processes in ref_x_max.py. Check that nvidia-smi runs correctly and shows the available GPUs.
+- CUDA/GPU Issues: Errors like "CUDA out of memory" suggest that the models are too large for the available VRAM. You may need to adjust the gpu_memory_utilization parameter in ref_x_vllm.py or reduce the number of parallel processes in ref_x_max.py. Check that nvidia-smi runs correctly and shows the available GPUs.
