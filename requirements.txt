@@ -1,5 +1,12 @@
+pydub==0.25.1
+ffmpeg==6.1.1
+whisper-timestamped==1.15.8
+regex==2024.11.6
+requests==2.32.3
+typing-extensions==4.12.2
+urllib3==2.3.0
+llama-cpp-python==0.2.90
+pandas
+numpy
 torch
-torchvision
-torchaudio
-whisper-timestamped
-runpod
+vllm

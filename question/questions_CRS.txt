@@ -1,0 +1,22 @@
+1. Question 1:
+Did the operator (not client) clearly introduce his/her name and mention the company? - (Answer: YES, NO)
+Example: "Operator: Halo saya Andi dari Home Credit." (Answer YES because operator introduced himself)
+
+2. Question 2:
+Did the operator ask for client/receiver's consent to continue the conversation/call? Provide an example of the request for consent. - (Answer: YES, NO)
+Example: "Operator: Boleh saya melanjutkan percakapan?" (Answer YES because operator asked)
+
+3. Question 3:
+What was the client's response regarding consent to continue the call? If no explicit answer was given or if the operator did not ask, answer N/A. - (Answer only in: YES, NO, N/A)
+Example: "Operatir: Boleh saya melanjutkan percakapan?; Client: Ya, boleh" -> Answer YES; But if "Client: Lagi sibuk" -> Answer NO
+Example: "Client: Maaf, saya sedang sibuk." (Answer NO if client declines or does not respond)
+Example: "Client: Iya" (Answer YES because client approved)
+
+4. Question 4:
+Did the operator clearly inform the client/receiver that the call was being recorded? Provide an example of the statement. - (Answer: YES, NO)
+Example: "Operator: Percakapan ini direkam untuk menjaga kualitas percakapan." (Answer YES because client is informed)
+
+5. Question 5:
+Did the call end properly, with both operator and client concluding the conversation? Answer YES if the conversation ended appropriately. Answer NO if the conversation ended abruptly or improperly. - (Answer: YES, NO)
+Example: "Operator: Terima kasih atas waktunya. Semoga harimu menyenangkan; Client: Ya, terima kasih." (Answer YES because conversation concludes properly)
+Example: "Operator: ...(conversations) seperti itu bapak. Halo ? Halo ?; Operator: Baik karena tidak ada jawaban panggilan diakhiri terima kasih." (Answer NO because conversation not concluded properly)

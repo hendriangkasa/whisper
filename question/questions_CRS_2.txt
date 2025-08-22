@@ -1,0 +1,9 @@
+1. Question 1:
+Assess the operator's sentiment in the conversation. Identify any instances of misbehavior or inappropriate language from the operator. Provide your assessment as either Positive, Negative, or Neutral, and justify your reasoning.
+Example: "Operator: Halo saya Andi dari Home Credit. Boleh minta waktunya sebentar?" (Answer: Positive - Polite)
+Example: "Operator: anjing lo" (Answer: Negative - Inappropriate language)
+
+2. Question 2:
+Evaluate the client's sentiment in the conversation. Identify any instances of misbehavior or inappropriate language from the client. Provide your assessment as either Positive, Negative, or Neutral, and justify your reasoning.
+Example: "Client: Harganya yang ini berapa ?" (Answer: Positive - Interested)
+Example: "Client: anjing lo" (Answer: Negative - Inappropriate language)
