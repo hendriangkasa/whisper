@@ -21,8 +21,11 @@ os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
 # Define constants
 LOGGING_DIR = "logs/"  # Base directory to store log files
-NUM_PROCESSES = 8  # Increased to 10 processes
-NUM_GPUS = 4  # Define the number of available GPUs
+# NUM_PROCESSES = 8  # Increased to 10 processes
+# NUM_GPUS = 4  # Define the number of available GPUs
+
+NUM_GPUS = torch.cuda.device_count() if torch.cuda.is_available() else 0
+NUM_PROCESSES = NUM_GPUS * 2  # 2 processes per GPU
 
 # Global flag for termination
 terminate_flag = multiprocessing.Value('i', 0)
@@ -52,6 +55,7 @@ console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
 logging.info("Logging setup complete.")
+logging.info(f"Auto-detected {NUM_GPUS} GPUs, using {NUM_PROCESSES} processes")
 
 # Signal handler for graceful termination
 def signal_handler(sig, frame):
@@ -139,7 +143,8 @@ os.makedirs(error_path, exist_ok=True)
 os.makedirs("output_multi8/json", exist_ok=True)  # Changed directory name to reflect 10 processes
 
 # GPU memory lock to prevent concurrent model loading on the same GPU
-gpu_locks = {i: multiprocessing.Lock() for i in range(NUM_GPUS)}
+# gpu_locks = {i: multiprocessing.Lock() for i in range(NUM_GPUS)}
+gpu_locks = {i: multiprocessing.Lock() for i in range(NUM_GPUS)} if NUM_GPUS > 0 else {}
 
 # Function to refine segments based on text
 def refine_segments_based_on_text(transcription):
