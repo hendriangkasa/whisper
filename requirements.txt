@@ -8,3 +8,4 @@ pandas
 numpy
 torch
 vllm==0.8.3
+auditok==0.2.0
