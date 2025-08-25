@@ -432,7 +432,7 @@ def process_data(input_file, output_dir, model_path):
     all_results.sort(key=lambda x: x['audio_name'])
 
     # Save the final combined results
-    final_output_file = os.path.join(output_dir, "final_llm_results_lasthour.json")
+    final_output_file = os.path.join(output_dir, "final_llm_results.json")
     with open(final_output_file, 'w') as f:
         json.dump(all_results, f, indent=2)
 
