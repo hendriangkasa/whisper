@@ -59,19 +59,35 @@ start_gpu_monitoring() {
     
     print_gpu "Starting GPU monitoring (logging every ${GPU_LOG_INTERVAL}s to: $gpu_log_file)"
     
-    # Background function to monitor GPU
     (
         while true; do
             {
                 echo "=== GPU Status at $(date) ==="
                 if command -v nvidia-smi &> /dev/null; then
-                    nvidia-smi --query-gpu=timestamp,name,pci.bus_id,driver_version,pstate,pcie.link.gen.current,pcie.link.width.current,temperature.gpu,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit --format=csv,noheader,nounits
-                    echo ""
-                    nvidia-smi --query-compute-apps=pid,process_name,gpu_uuid,gpu_name,used_memory --format=csv,noheader
+                    nvidia-smi --query-gpu=timestamp,name,pci.bus_id,driver_version,pstate,\
+pcie.link.gen.current,pcie.link.width.current,temperature.gpu,utilization.gpu,\
+utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit \
+--format=csv,noheader,nounits |
+                    while IFS=',' read -r ts name pci driver pstate pgen pwidth temp gpuutil memutil memtot memfree memused pdraw plimit; do
+                        echo "  Timestamp        : $ts"
+                        echo "  GPU Name         : $name"
+                        echo "  PCI Bus ID       : $pci"
+                        echo "  Driver Version   : $driver"
+                        echo "  Perf State       : $pstate"
+                        echo "  PCIe Gen/Width   : Gen $pgen x$pwidth"
+                        echo "  Temp (°C)        : $temp"
+                        echo "  GPU Util (%)     : $gpuutil"
+                        echo "  Mem Util (%)     : $memutil"
+                        echo "  Mem Total (MiB)  : $memtot"
+                        echo "  Mem Free (MiB)   : $memfree"
+                        echo "  Mem Used (MiB)   : $memused"
+                        echo "  Power Draw (W)   : $pdraw"
+                        echo "  Power Limit (W)  : $plimit"
+                        echo "----------------------------------------------"
+                    done
                 else
                     echo "nvidia-smi not available"
                 fi
-                echo "=============================================="
                 echo ""
             } >> "$gpu_log_file" 2>&1
             sleep "$GPU_LOG_INTERVAL"
@@ -82,6 +98,7 @@ start_gpu_monitoring() {
     echo "$GPU_MONITOR_PID" > /tmp/gpu_monitor_pid.tmp
     print_gpu "GPU monitoring started (PID: $GPU_MONITOR_PID)"
 }
+
 
 # Function to stop GPU monitoring
 stop_gpu_monitoring() {
