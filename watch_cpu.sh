@@ -8,8 +8,12 @@ echo "[INFO] Writing htop-like logs to: $log_file"
 while true; do
     echo "===== $(date +"%Y-%m-%d %H:%M:%S") =====" >> "$log_file"
     
-    # CPU usage per core using htop in batch mode
-    htop -d 10 -n 1 -b | head -20 >> "$log_file"
+    # CPU usage summary
+    top -bn1 | grep "^%Cpu" >> "$log_file"
+    
+    # Per-core CPU usage from /proc/stat
+    echo "Per-core CPU stats:" >> "$log_file"
+    grep "^cpu[0-9]" /proc/stat >> "$log_file"
     
     # Memory usage
     free -h >> "$log_file"
