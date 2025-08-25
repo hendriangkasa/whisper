@@ -10,7 +10,6 @@ from pydub import AudioSegment
 import whisper_timestamped as whisper
 from datetime import datetime
 import pandas as pd
-from llama_cpp import Llama
 import numpy as np
 import multiprocessing
 import torch
