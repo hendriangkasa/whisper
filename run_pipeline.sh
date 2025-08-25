@@ -323,7 +323,7 @@ print_status "vLLM process finished successfully."
 echo "--------------------------------------------------"
 
 # --- 7. Final Verification ---
-FINAL_OUTPUT="output_vllm/final_llm_results_lasthour.json"
+FINAL_OUTPUT="output_vllm/final_llm_results.json"
 if [[ -f "$FINAL_OUTPUT" ]]; then
     FINAL_SIZE=$(du -h "$FINAL_OUTPUT" | cut -f1)
     print_status "Final output generated: $FINAL_OUTPUT (Size: $FINAL_SIZE)"
