@@ -139,7 +139,7 @@ error_path = "data/error"
 
 # Ensure the output and error directories exist
 os.makedirs(error_path, exist_ok=True)
-os.makedirs("output_multi8/json", exist_ok=True)  # Changed directory name to reflect 10 processes
+os.makedirs("output/json", exist_ok=True)  # Changed directory name to reflect 10 processes
 
 # GPU memory lock to prevent concurrent model loading on the same GPU
 # gpu_locks = {i: multiprocessing.Lock() for i in range(NUM_GPUS)}
@@ -360,7 +360,7 @@ def process_audio_file(audio_file, process_id):
             }
             
             # Write JSON output
-            fout = f"output_multi8/json/{os.path.basename(audio_file).replace('.mp3', '.json')}"
+            fout = f"output/json/{os.path.basename(audio_file).replace('.mp3', '.json')}"
             with open(fout, 'w') as f:
                 json.dump(transcription, f)
             
