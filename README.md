@@ -125,10 +125,56 @@ pip install -r requirements.txt
 
 **Note:** Make sure you're in the activated conda environment (`audio_pipeline`) when installing packages. You should see `(audio_pipeline)` at the beginning of your command prompt.
 
+## Directory Structure
+
+```
+project/
+├── data/                       # Input audio files (.mp3)
+├── question/
+│   ├── questions_CRS.txt                 # Questions for analysis
+│   └── questions_CRS_2.txt              # Additional questions
+├── model/
+│   └── LLM.xyz                          # Large Language Model files
+├── output/
+│   ├── json/                            # Individual transcription JSONs
+│   └── final_results.json      # Combined transcription results
+├── output_vllm/
+│   ├── json_llm/                        # Individual LLM analysis JSONs
+│   └── final_llm_results.json  # Final combined results
+├── logs/
+│   ├── main/YYYYMM/                     # Transcription logs
+│   ├── vllm/YYYYMM/                     # LLM analysis logs
+│   └── monitoring/YYYYMM/               # Resource monitoring logs
+├── ref_x_max.py                         # Transcription script
+├── ref_x_vllm.py                       # LLM analysis script
+├── run_pipeline.sh                      # Main execution script
+├── watch_cpu.sh                         # CPU monitoring script
+├── watch_gpu.sh                         # GPU monitoring script
+├── requirements.txt                     # Python dependencies
+└── README.md                           # This file
+```
+
 ## How to Run the Pipeline
+
+### Basic Execution
 To execute the entire automated workflow, use the provided bash script run_pipeline.sh:
 ```bash
 ./run_pipeline.sh
+```
+
+### With Resource Monitoring
+To run the pipeline with CPU and GPU monitoring (recommended for production):
+```bash
+chmod +x run_pipeline.sh watch_cpu.sh watch_gpu.sh && \
+ ./watch_cpu.sh & CPU_PID=$! && \
+ ./watch_gpu.sh & GPU_PID=$! && \
+ echo "[INFO] Monitoring started (CPU PID=$CPU_PID, GPU PID=$GPU_PID)" && \
+ ( \
+   conda activate audio_pipeline && \
+   ./run_pipeline.sh \
+ ) && \
+ kill $CPU_PID $GPU_PID && \
+ echo "[INFO] Pipeline finished. Monitoring stopped."
 ```
 
 The script will:
@@ -138,33 +184,33 @@ The script will:
 4. Run ref_x_max.py to perform audio transcription
 5. Upon successful completion, automatically start ref_x_vllm.py to process the transcriptions
 
-You can monitor the progress in the console and in the logs/ directory.
+You can monitor the progress in the console and in the logs/ directory. When using monitoring, resource usage logs will be saved in `logs/monitoring/YYYYMM/` directory.
 
 ## Scripts Overview
 
 ### ref_x_max.py (Transcription Stage)
 - **Function**: Transcribes stereo MP3 audio files into text.
-- **Input**: Reads .mp3 files from the hardcoded directory: `data/80audio/lasthour_transcribe file/`.
+- **Input**: Reads .mp3 files from the hardcoded directory: `data`.
 - **Process**: 
   - a. Splits stereo audio into separate channels (Operator and Customer).
   - b. Uses the whisper_timestamped model for transcription.
   - c. Distributes the workload across multiple GPUs (NUM_GPUS = 4) using multiprocessing (NUM_PROCESSES = 8) for significant speed-up.
   - d. Handles graceful shutdown on Ctrl+C, allowing current tasks to finish.
-- **Output**: Creates individual JSON files for each audio in `output_multi8/json/` and a final combined file: `output_multi8/final_results_lasthour.json`.
+- **Output**: Creates individual JSON files for each audio in `output/json/` and a final combined file: `output/final_results.json`.
 
 ### ref_x_vllm.py (LLM Analysis Stage)
 - **Function**: Analyzes the transcribed text to generate summaries, answer specific questions, and determine sentiment.
-- **Input**: Takes the path to the combined JSON file from the first stage (`output_multi8/final_results_lasthour.json`) as a command-line argument.
+- **Input**: Takes the path to the combined JSON file from the first stage (`output/final_results.json`) as a command-line argument.
 - **Process**: 
   - a. Uses the vLLM engine for high-performance inference with a large language model.
   - b. Utilizes tensor parallelism across multiple GPUs (NUM_GPUS = 4) to run the model.
   - c. Processes each transcription with three different prompts (Summary, Q&A, Sentiment).
-- **Output**: Saves a detailed JSON file for each processed transcription in `output_vllm/json_llm/` and a final combined results file at `output_vllm/final_llm_results_lasthour.json`.
+- **Output**: Saves a detailed JSON file for each processed transcription in `output_vllm/json_llm/` and a final combined results file at `output_vllm/final_llm_results.json`.
 
 ## Configuration
 While most settings are within the Python scripts, the following are crucial for deployment:
 
-- **Audio Input Path** (ref_x_max.py): The script expects audio files to be located in `data/80audio/lasthour_transcribe file/`. This path is hardcoded.
+- **Audio Input Path** (ref_x_max.py): The script expects audio files to be located in `data`. This path is hardcoded.
 - **Question Files** (ref_x_max.py & ref_x_vllm.py): The scripts read questions from `question/questions_CRS.txt` and `question/questions_CRS_2.txt`. These files must be present.
 - **Model Path** (run_pipeline.sh): The path to the LLM model (`model/LLM.xyz`) is specified as an argument in the run_pipeline.sh script. Ensure this path is correct before running.
 - **GPU Allocation**: The number of GPUs and processes are set as constants at the top of each script (NUM_GPUS, NUM_PROCESSES). These can be adjusted based on the server's hardware.
@@ -172,8 +218,9 @@ While most settings are within the Python scripts, the following are crucial for
 ## Logging and Outputs
 
 - **Logs**: Both scripts generate detailed logs. They are stored in versioned, monthly directories (e.g., `logs/main/202508/` and `logs/vllm/202508/`). Logs are also printed to the console.
-- **Intermediate Output**: The transcription script's primary output is `output_multi8/final_results_lasthour.json`.
-- **Final Output**: The vLLM script's final, analyzed output is `output_vllm/final_llm_results_lasthour.json`.
+- **Monitoring Logs**: When using resource monitoring, CPU and GPU usage logs are stored in `logs/monitoring/YYYYMM/` with daily rotation.
+- **Intermediate Output**: The transcription script's primary output is `output/final_results.json`.
+- **Final Output**: The vLLM script's final, analyzed output is `output_vllm/final_llm_results.json`.
 
 ## Troubleshooting
 If you encounter any issues, please check the following:
