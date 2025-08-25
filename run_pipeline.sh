@@ -42,81 +42,81 @@ print_gpu() {
 }
 
 # Function to create timestamped log directory
-create_log_dir() {
-    local log_base_dir="logs/gpu_monitoring"
-    local current_month=$(date +"%Y%m")
-    local log_dir="$log_base_dir/$current_month"
+# create_log_dir() {
+#     local log_base_dir="logs/gpu_monitoring"
+#     local current_month=$(date +"%Y%m")
+#     local log_dir="$log_base_dir/$current_month"
     
-    mkdir -p "$log_dir"
-    echo "$log_dir"
-}
+#     mkdir -p "$log_dir"
+#     echo "$log_dir"
+# }
 
 # Function to start GPU monitoring
-start_gpu_monitoring() {
-    local log_dir=$(create_log_dir)
-    local timestamp=$(date +"%Y%m%d_%H%M%S")
-    local gpu_log_file="$log_dir/gpu_stats_${timestamp}.log"
+# start_gpu_monitoring() {
+#     local log_dir=$(create_log_dir)
+#     local timestamp=$(date +"%Y%m%d_%H%M%S")
+#     local gpu_log_file="$log_dir/gpu_stats_${timestamp}.log"
     
-    print_gpu "Starting GPU monitoring (logging every ${GPU_LOG_INTERVAL}s to: $gpu_log_file)"
+#     print_gpu "Starting GPU monitoring (logging every ${GPU_LOG_INTERVAL}s to: $gpu_log_file)"
     
-    (
-        while true; do
-            {
-                echo "=== GPU Status at $(date) ==="
-                if command -v nvidia-smi &> /dev/null; then
-                    nvidia-smi --query-gpu=timestamp,name,pci.bus_id,driver_version,pstate,\
-pcie.link.gen.current,pcie.link.width.current,temperature.gpu,utilization.gpu,\
-utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit \
---format=csv,noheader,nounits |
-                    while IFS=',' read -r ts name pci driver pstate pgen pwidth temp gpuutil memutil memtot memfree memused pdraw plimit; do
-                        echo "  Timestamp        : $ts"
-                        echo "  GPU Name         : $name"
-                        echo "  PCI Bus ID       : $pci"
-                        echo "  Driver Version   : $driver"
-                        echo "  Perf State       : $pstate"
-                        echo "  PCIe Gen/Width   : Gen $pgen x$pwidth"
-                        echo "  Temp (°C)        : $temp"
-                        echo "  GPU Util (%)     : $gpuutil"
-                        echo "  Mem Util (%)     : $memutil"
-                        echo "  Mem Total (MiB)  : $memtot"
-                        echo "  Mem Free (MiB)   : $memfree"
-                        echo "  Mem Used (MiB)   : $memused"
-                        echo "  Power Draw (W)   : $pdraw"
-                        echo "  Power Limit (W)  : $plimit"
-                        echo "----------------------------------------------"
-                    done
-                else
-                    echo "nvidia-smi not available"
-                fi
-                echo ""
-            } >> "$gpu_log_file" 2>&1
-            sleep "$GPU_LOG_INTERVAL"
-        done
-    ) &
+#     (
+#         while true; do
+#             {
+#                 echo "=== GPU Status at $(date) ==="
+#                 if command -v nvidia-smi &> /dev/null; then
+#                     nvidia-smi --query-gpu=timestamp,name,pci.bus_id,driver_version,pstate,\
+# pcie.link.gen.current,pcie.link.width.current,temperature.gpu,utilization.gpu,\
+# utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit \
+# --format=csv,noheader,nounits |
+#                     while IFS=',' read -r ts name pci driver pstate pgen pwidth temp gpuutil memutil memtot memfree memused pdraw plimit; do
+#                         echo "  Timestamp        : $ts"
+#                         echo "  GPU Name         : $name"
+#                         echo "  PCI Bus ID       : $pci"
+#                         echo "  Driver Version   : $driver"
+#                         echo "  Perf State       : $pstate"
+#                         echo "  PCIe Gen/Width   : Gen $pgen x$pwidth"
+#                         echo "  Temp (°C)        : $temp"
+#                         echo "  GPU Util (%)     : $gpuutil"
+#                         echo "  Mem Util (%)     : $memutil"
+#                         echo "  Mem Total (MiB)  : $memtot"
+#                         echo "  Mem Free (MiB)   : $memfree"
+#                         echo "  Mem Used (MiB)   : $memused"
+#                         echo "  Power Draw (W)   : $pdraw"
+#                         echo "  Power Limit (W)  : $plimit"
+#                         echo "----------------------------------------------"
+#                     done
+#                 else
+#                     echo "nvidia-smi not available"
+#                 fi
+#                 echo ""
+#             } >> "$gpu_log_file" 2>&1
+#             sleep "$GPU_LOG_INTERVAL"
+#         done
+#     ) &
     
-    GPU_MONITOR_PID=$!
-    echo "$GPU_MONITOR_PID" > /tmp/gpu_monitor_pid.tmp
-    print_gpu "GPU monitoring started (PID: $GPU_MONITOR_PID)"
-}
+#     GPU_MONITOR_PID=$!
+#     echo "$GPU_MONITOR_PID" > /tmp/gpu_monitor_pid.tmp
+#     print_gpu "GPU monitoring started (PID: $GPU_MONITOR_PID)"
+# }
 
 
-# Function to stop GPU monitoring
-stop_gpu_monitoring() {
-    if [[ -n "$GPU_MONITOR_PID" ]] && kill -0 "$GPU_MONITOR_PID" 2>/dev/null; then
-        print_gpu "Stopping GPU monitoring (PID: $GPU_MONITOR_PID)"
-        kill "$GPU_MONITOR_PID" 2>/dev/null
-        wait "$GPU_MONITOR_PID" 2>/dev/null
-    elif [[ -f "/tmp/gpu_monitor_pid.tmp" ]]; then
-        local stored_pid=$(cat /tmp/gpu_monitor_pid.tmp)
-        if [[ -n "$stored_pid" ]] && kill -0 "$stored_pid" 2>/dev/null; then
-            print_gpu "Stopping GPU monitoring (PID: $stored_pid)"
-            kill "$stored_pid" 2>/dev/null
-            wait "$stored_pid" 2>/dev/null
-        fi
-        rm -f /tmp/gpu_monitor_pid.tmp
-    fi
-    print_gpu "GPU monitoring stopped"
-}
+# # Function to stop GPU monitoring
+# stop_gpu_monitoring() {
+#     if [[ -n "$GPU_MONITOR_PID" ]] && kill -0 "$GPU_MONITOR_PID" 2>/dev/null; then
+#         print_gpu "Stopping GPU monitoring (PID: $GPU_MONITOR_PID)"
+#         kill "$GPU_MONITOR_PID" 2>/dev/null
+#         wait "$GPU_MONITOR_PID" 2>/dev/null
+#     elif [[ -f "/tmp/gpu_monitor_pid.tmp" ]]; then
+#         local stored_pid=$(cat /tmp/gpu_monitor_pid.tmp)
+#         if [[ -n "$stored_pid" ]] && kill -0 "$stored_pid" 2>/dev/null; then
+#             print_gpu "Stopping GPU monitoring (PID: $stored_pid)"
+#             kill "$stored_pid" 2>/dev/null
+#             wait "$stored_pid" 2>/dev/null
+#         fi
+#         rm -f /tmp/gpu_monitor_pid.tmp
+#     fi
+#     print_gpu "GPU monitoring stopped"
+# }
 
 # Function to show current GPU status
 show_gpu_status() {
@@ -133,7 +133,7 @@ show_gpu_status() {
 # Trap to ensure GPU monitoring is stopped on script exit
 cleanup() {
     print_status "Cleaning up..."
-    stop_gpu_monitoring
+    # stop_gpu_monitoring
     exit
 }
 
@@ -267,8 +267,8 @@ fi
 
 echo "--------------------------------------------------"
 
-# --- 3. Start GPU Monitoring ---
-start_gpu_monitoring
+# # --- 3. Start GPU Monitoring ---
+# start_gpu_monitoring
 
 # --- 4. Run Transcription Script ---
 print_status "Starting the transcription process (ref_x_max.py)..."
@@ -338,5 +338,5 @@ show_gpu_status
 
 print_status "Pipeline completed successfully!"
 print_status "Check the logs/ directory for detailed execution logs."
-print_gpu "GPU monitoring logs are saved in logs/gpu_monitoring/$(date +"%Y%m")/"
+# print_gpu "GPU monitoring logs are saved in logs/gpu_monitoring/$(date +"%Y%m")/"
 echo "=================================================="
