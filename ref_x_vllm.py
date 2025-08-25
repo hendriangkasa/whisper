@@ -15,7 +15,8 @@ from vllm import LLM, SamplingParams
 
 # Define constants
 LOGGING_DIR = "logs/"  # Base directory to store log files
-NUM_GPUS = 4  # Number of GPUs to use for tensor parallelism
+# NUM_GPUS = 4  # Number of GPUs to use for tensor parallelism
+NUM_GPUS = torch.cuda.device_count() if torch.cuda.is_available() else 1
 
 # Global flag for termination
 terminate_flag = multiprocessing.Value('i', 0)
@@ -45,6 +46,7 @@ console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
 logging.info("VLLM Logging setup complete.")
+logging.info(f"Auto-detected {NUM_GPUS} GPUs for tensor parallelism")
 
 # Signal handler for graceful termination
 def signal_handler(sig, frame):
