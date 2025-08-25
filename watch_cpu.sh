@@ -22,5 +22,5 @@ while true; do
     echo "Load: $(cat /proc/loadavg)" >> "$log_file"
     
     echo "" >> "$log_file"
-    sleep 5
+    sleep 30
 done
