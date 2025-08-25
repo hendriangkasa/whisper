@@ -133,9 +133,9 @@ def remove_timestamps(text):
     return re.sub(pattern, '', text)
 
 # Base paths
-base_path = "data/80audio/lasthour_transcribe file"
+base_path = "data"
 output_path = base_path
-error_path = "data/80audio/lasthour_transcribe file/error"
+error_path = "data/error"
 
 # Ensure the output and error directories exist
 os.makedirs(error_path, exist_ok=True)
