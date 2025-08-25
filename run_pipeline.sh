@@ -206,7 +206,7 @@ if ! python -c "import whisper_timestamped, vllm" &> /dev/null; then
 fi
 
 # Check if required directories exist
-REQUIRED_DIRS=("data/80audio/lasthour_transcribe file" "question" "output_multi8" "output_vllm" "logs" "logs/gpu_monitoring")
+REQUIRED_DIRS=("data" "question" "output" "output_vllm" "logs" "logs/monitoring")
 for dir in "${REQUIRED_DIRS[@]}"; do
     if [[ ! -d "$dir" ]]; then
         print_warning "Creating missing directory: $dir"
