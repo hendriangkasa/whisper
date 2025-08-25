@@ -5,7 +5,7 @@ requests==2.32.3
 typing-extensions==4.12.2
 urllib3==2.3.0
 pandas
-numpy
+numpy<2
 torch
 vllm==0.8.3
 auditok==0.2.0
