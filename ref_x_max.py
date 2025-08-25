@@ -516,7 +516,7 @@ def main():
         ]
         
         # Save the final results
-        with open("output_multi8/final_results.json", 'w') as f:
+        with open("output/final_results.json", 'w') as f:
             json.dump(data, f)
         
         logging.info(f"Successfully processed {len(transcriptions)} files")
