@@ -291,7 +291,7 @@ print_status "Transcription process finished successfully."
 echo "--------------------------------------------------"
 
 # --- 5. Verify Transcription Output ---
-TRANSCRIPTION_OUTPUT="output_multi8/final_results_lasthour.json"
+TRANSCRIPTION_OUTPUT="output/final_results.json"
 if [[ ! -f "$TRANSCRIPTION_OUTPUT" ]]; then
     print_error "Expected transcription output file not found: $TRANSCRIPTION_OUTPUT"
     print_error "The transcription script may have failed silently."
